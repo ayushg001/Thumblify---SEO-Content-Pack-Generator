@@ -17,14 +17,15 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd Thumblify---AI-Thumbnail-Generator
+            cd /home/ubuntu/Thumblify---AI-Thumbnail-Generator
 
             git pull origin main
 
             cd server
             npm install
-            pm2 restart server
+            pm2 restart thumblify-backend
 
             cd ../client
             npm install
             npm run build
+            pm2 restart thumblify-frontend
