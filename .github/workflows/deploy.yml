@@ -28,4 +28,4 @@ jobs:
             cd ../client
             npm install
             npm run build
-            pm2 restart thumblify-frontend
+            pm2 restart thumblify-frontend 
