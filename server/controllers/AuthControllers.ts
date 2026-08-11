@@ -26,7 +26,10 @@ export const registerUser = async (req : Request , res : Response) => {
             user : {
                 _id : newUser._id,
                 name : newUser.name,
-                email : newUser.email
+                email : newUser.email,
+                plan : newUser.plan,
+                credits : newUser.credits,
+                creditsResetAt : newUser.creditsResetAt
             }
        })
    } catch (error : any){
@@ -58,7 +61,10 @@ export const loginUser = async (req : Request , res : Response) => {
             user : {
                 _id : user._id,
                 name : user.name,
-                email : user.email
+                email : user.email,
+                plan : user.plan,
+                credits : user.credits,
+                creditsResetAt : user.creditsResetAt
             }
        })
    } catch (error : any){

@@ -2,42 +2,46 @@ import type { IPricing } from "../types";
 
 export const pricingData: IPricing[] = [
     {
-        name: "Basic",
-        price: 29,
+        name: "Free",
+        price: 0,
         period: "month",
+        credits: 30,
         features: [
-            "50 AI Content Packs/mo",
+            "30 Credits / month",
             "YouTube & Instagram SEO",
             "Viral Title Generator",
             "Hashtag & Tag Packs",
-            "Email Support"
+            "Standard Generation Speed"
         ],
         mostPopular: false
     },
     {
         name: "Pro",
-        price: 79,
+        price: 499,
         period: "month",
+        credits: 200,
         features: [
-            "Unlimited AI Content Packs",
+            "200 Credits / month",
             "Full Video Script Outlines",
             "Thumbnail Visual Prompts",
             "SEO Keyword Optimizer",
-            "Priority Generation",
+            "Priority AI Generation",
             "24/7 Priority Support"
         ],
         mostPopular: true
     },
     {
-        name: "Enterprise",
-        price: 199,
+        name: "Premium",
+        price: 1499,
         period: "month",
+        credits: 1000,
         features: [
-            "Everything in Pro",
-            "API Access",
-            "Team Collaboration",
-            "Multi-Account Management",
-            "Dedicated Account Manager"
+            "1,000 Credits / month",
+            "Everything in Pro Plan",
+            "Bulk Content Packs",
+            "Advanced Keyword Optimizer",
+            "VIP Dedicated Support",
+            "Maximum Priority Processing"
         ],
         mostPopular: false
     }

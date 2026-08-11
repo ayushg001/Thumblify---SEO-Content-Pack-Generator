@@ -51,6 +51,7 @@ export interface IPricing {
     name: string;
     price: number;
     period: string;
+    credits?: number;
     features: string[];
     mostPopular: boolean;
 }

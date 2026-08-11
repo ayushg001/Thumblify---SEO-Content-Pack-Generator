@@ -1,4 +1,4 @@
-import { MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, XIcon, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { motion } from "motion/react";
 
@@ -43,33 +43,51 @@ export default function Navbar() {
                     <button onClick={() => scrollToSection('contact')} className="hover:text-pink-500 transition cursor-pointer">Contact us</button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                     {isLoggedIn ? (
-                        <div className="relative group">
-                            <button className="rounded-full size-8 bg-white/20 border-2 border-white/10">
-                                {user?.name.charAt(0).toUpperCase()}
-                            </button>
-                            <div className="absolute hidden group-hover:block top-6 right-0 pt-4">
-                                <button onClick={() => logout()} className="bg-white/20 border-2 border-white/10 px-5 py-1.5 rounded cursor-pointer">
-                                    Logout
-                                </button>
+                        <>
+                            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-pink-500/10 border border-pink-500/20 text-pink-300 rounded-full text-xs font-semibold">
+                                <Sparkles size={14} className="text-pink-400" />
+                                <span>{user?.credits ?? 0} Credits</span>
                             </div>
-                        </div>
+
+                            <div className="relative group">
+                                <button className="rounded-full size-8 bg-white/20 border-2 border-white/10 font-semibold flex items-center justify-center text-sm">
+                                    {user?.name?.charAt(0).toUpperCase()}
+                                </button>
+                                <div className="absolute hidden group-hover:block top-6 right-0 pt-4 z-50">
+                                    <div className="bg-zinc-900 border border-white/10 rounded-xl p-3 shadow-2xl min-w-[140px] text-xs space-y-2">
+                                        <p className="font-semibold text-zinc-100 truncate">{user?.name}</p>
+                                          <p className="font-semibold text-zinc-100 truncate "><span>Plan : </span>{user?.plan?.toUpperCase()}</p>
+                                        <hr className="border-white/10 my-1" />
+                                        <button onClick={() => logout()} className="w-full text-left text-red-400 hover:text-red-300 cursor-pointer">
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
                     ) :
                         (
                             <button onClick={() => navigate('/login')} className="hidden md:block px-6 py-2.5 bg-pink-600 hover:bg-pink-700 active:scale-95 transition-all rounded-full cursor-pointer">
                                 Get Started
                             </button>
                         )}
-                         <button onClick={() => setIsOpen(true)} className="md:hidden">
-                    <MenuIcon size={26} className="active:scale-90 transition" />
-                </button>
+                    <button onClick={() => setIsOpen(true)} className="md:hidden">
+                        <MenuIcon size={26} className="active:scale-90 transition" />
+                    </button>
                 </div>
 
-               
+
             </motion.nav>
 
             <div className={`fixed inset-0 z-100 bg-black/40 backdrop-blur flex flex-col items-center justify-center text-lg gap-8 md:hidden transition-transform duration-400 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                {isLoggedIn && (
+                    <div className="flex items-center gap-2 px-4 py-1.5 bg-pink-500/10 border border-pink-500/20 text-pink-300 rounded-full text-sm font-semibold mb-2">
+                        <Sparkles size={16} className="text-pink-400" />
+                        <span>{user?.credits ?? 0} Credits available</span>
+                    </div>
+                )}
                 <Link onClick={() => setIsOpen(false)} to='/' >Home</Link>
                 <Link onClick={() => setIsOpen(false)} to='/generate'> Generate </Link>
                 {isLoggedIn && (
@@ -80,7 +98,7 @@ export default function Navbar() {
                 <button onClick={() => { setIsOpen(false); scrollToSection('contact'); }} className="cursor-pointer">Contact us</button>
 
                 {isLoggedIn ? (
-                    <button onClick={() => { setIsOpen(false); logout(); }} className="cursor-pointer">Logout</button>
+                    <button onClick={() => { setIsOpen(false); logout(); }} className="cursor-pointer text-red-400">Logout</button>
                 ) : (
                     <Link onClick={() => setIsOpen(false)} to='/login'>Login</Link>
                 )}

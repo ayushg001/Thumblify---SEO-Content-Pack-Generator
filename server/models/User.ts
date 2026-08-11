@@ -1,9 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import plans from '../config/plans.js';
 
-export interface IUser extends Document{
-     name: string;
+export interface IUser extends Document {
+    name: string;
     email: string;
     password?: string;
+    plan: string;
+    credits: number;
+    creditsResetAt: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -20,9 +24,26 @@ const UserSchema = new mongoose.Schema<IUser>({
         trim : true,
         unique: true
     },
-     password : {
+    password : {
         type : String ,
         required : true,
+    },
+    plan : {
+        type : String,
+        enum : ['free' , 'pro' , 'premium'],
+        default : 'free'
+    }, 
+    credits : {
+        type : Number ,
+        default : plans.free.credits
+    },
+    creditsResetAt : {
+        type : Date ,
+        default : ()=> {
+            const d = new Date();
+            d.setMonth(d.getMonth() +1);
+            return d;
+        }
     }
 } , {timestamps : true});     // timestamps will automatically create the 'Created_At' field
 

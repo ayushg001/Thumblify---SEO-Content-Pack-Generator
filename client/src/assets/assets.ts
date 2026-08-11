@@ -77,9 +77,13 @@ export interface IContentPack {
 }
 
 export interface IUser {
+    _id?: string;
     name: string;
     email: string;
     password?: string;
+    plan?: string;
+    credits?: number;
+    creditsResetAt?: Date | string;
     createdAt?: Date;
     updatedAt?: Date;
 }

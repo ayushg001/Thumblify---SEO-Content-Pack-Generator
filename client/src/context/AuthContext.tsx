@@ -7,10 +7,11 @@ interface AuthContextProps {
     isLoggedIn : boolean,
     setIsLoggedIn : (isLoggedIn : boolean) => void ;
     user : IUser | null;
-    setUser :   (user : IUser | null) => void;
+    setUser : React.Dispatch<React.SetStateAction<IUser | null>>;
     login : (user : {email : string ; password : string}) => Promise<void>;
-      signUp : (user : {name : string ;email : string ; password : string}) => Promise<void>;
-      logout : () => Promise<void>;
+    signUp : (user : {name : string ;email : string ; password : string}) => Promise<void>;
+    logout : () => Promise<void>;
+    fetchUser : () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextProps>({
     login : async () => {},
     signUp : async () => {},
     logout : async () => {},
+    fetchUser : async () => {},
 });
 
 export const AuthProvider = ({children} : {children : React.ReactNode}) => {
@@ -91,7 +93,7 @@ export const AuthProvider = ({children} : {children : React.ReactNode}) => {
     const value ={
         user , setUser ,
         isLoggedIn , setIsLoggedIn,
-        signUp , login , logout 
+        signUp , login , logout, fetchUser
     }
 
     return (

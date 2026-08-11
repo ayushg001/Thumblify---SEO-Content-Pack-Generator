@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Thumbnail from '../models/Thumbnail.js';
+import User from '../models/User.js';
 import ai from '../config/ai..js';
 import { buildPromptForPlatform, GenerateContentInput } from '../helpers/promptBuilder.js';
 
@@ -88,9 +89,17 @@ export const generateThumbnail = async (req: Request, res: Response) => {
 
         console.log('[Generate] DB record created:', videoRecord._id);
 
+        // Deduct 2 credit from user
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $inc: { credits: -2 } },
+            { new: true }
+        );
+
         return res.status(201).json({
             message: 'Content pack generated successfully',
-            videoRecord
+            videoRecord,
+            credits: updatedUser?.credits
         });
     } catch (error: any) {
         console.error('[Generate] Error:', error.message || error);

@@ -15,7 +15,7 @@ import api from "../configs/api";
 const Generate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user, setUser } = useAuth();
 
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
@@ -28,6 +28,9 @@ const Generate = () => {
   const [videoLength, setVideoLength] = useState<VideoLength>(videoLengths[0]);
   const [contentGoal, setContentGoal] = useState<ContentGoal>(contentGoals[0]);
 
+  const userCredits = user?.credits ?? 0;
+  const hasEnoughCredits = userCredits >= 2;
+
   useEffect(() => {
     if (platform === 'Instagram') {
       setAspectRatio('9:16');
@@ -36,6 +39,7 @@ const Generate = () => {
 
   const handleGenerate = async () => {
     if (!isLoggedIn) return toast.error('Please login to generate content pack');
+    if (!hasEnoughCredits) return toast.error('You need at least 2 credit to generate content pack');
     if (!title.trim()) return toast.error('Video topic is required');
     setLoading(true);
 
@@ -49,6 +53,9 @@ const Generate = () => {
         additionalDetails,
       };
       const { data } = await api.post('/api/thumbnail/generate', api_payload);
+      if (data.credits !== undefined && setUser) {
+        setUser((prev: any) => prev ? { ...prev, credits: data.credits } : prev);
+      }
       const resultObj = data.videoRecord || data.thumbnail;
       if (resultObj) {
         setGeneratedData(resultObj);
@@ -184,9 +191,10 @@ console.log("Item :" , item)
                 {/* BUTTON */}
                 {!id && (
                   <button onClick={handleGenerate}
+                    disabled={loading || !hasEnoughCredits}
                     className="text-[15px] w-full py-3.5 rounded-xl font-semibold bg-linear-to-b from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 
-                  disabled:cursor-not-allowed transition-all shadow-lg shadow-pink-500/20 active:scale-98 cursor-pointer">
-                    {loading ? "Generating..." : "Generate Pack"}
+                  disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-pink-500/20 active:scale-98 cursor-pointer">
+                    {loading ? "Generating..." : !hasEnoughCredits ? "Insufficient Credits (1 left)" : "Generate Pack"}
                   </button>
                 )}
               </div>
